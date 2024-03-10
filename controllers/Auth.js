@@ -80,6 +80,7 @@ exports.login=async (req,res)=>{
             user:user.toObject();
             user.token=token
             user.password=undefined
+            // password hide kr dia 
 
             res.cookie('token', token, { httpOnly: true, expiresIn:Date.now() +3*24*3600*1000 }).status(200).json({
                 message:"user logged in successfuly ",
