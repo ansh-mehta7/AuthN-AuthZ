@@ -1,13 +1,17 @@
 // authentication 
-// authoriaton 
+// authorisataton 
 require("dotenv").config()
 const jwt =require('jsonwebtoken')
 // next is used to call for the next middleware in the ordering 
 // as sepecifod in the routes
+
 exports.auth=(req,res,next)=>{
-        try{
+    try{
+            console.log("cookie",req.cookies.token)
+            console.log("body",req.body.token)
+            console.log("headers",req.header("Authorization"))
             // extract jwt token 
-            const token=req.body.token|| req.cookies.token;
+            const token=req.body.token|| req.cookies.token || req.header("Authorization").replace("Bearer","");
             if (!token){
                 return res.status(400).json({
                     success:false,
@@ -27,7 +31,7 @@ exports.auth=(req,res,next)=>{
         catch(error){
             return res.status(401).json({
                 success:false,
-                message:"token is invalid "
+                message:"token verification failed "
             })
 
         }
@@ -50,10 +54,10 @@ exports.auth=(req,res,next)=>{
                 })
             }
             next();
-        }catch(errro){
+        }catch(error){
             return res.status(500).json({
                 success:false,
-                message:"user role is not macthing"
+                message:"student role is not macthing"
             });
         }
     }
@@ -72,7 +76,7 @@ exports.auth=(req,res,next)=>{
         }catch(error){
             return res.status(500).json({
                 success:false,
-                message:"user role is not macthing"
+                message:"Admin  role is not macthing"
             });
         }
     }

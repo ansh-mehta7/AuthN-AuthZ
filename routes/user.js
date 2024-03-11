@@ -5,16 +5,11 @@ const {login,signUp}=require("../controllers/Auth")
 const {auth,isAdmin,isStudent}= require ("../middlewares/auth")
 router.post("/login",login)
 router.post("/signup",signUp)
-
-router.get("/test ",auth,(req,res)=>{
-       try{
-        res.json({
-            success:true,
-            message:"welcome to the TEST protected routes "
-        });
-       }catch(error){
-        console.log(error.message)
-       }
+router.get("/test",auth,(req,res)=>{
+       res.json({
+        success:true,
+        message:"welcome to protected route for test"
+       })
 });
 
 router.get("/student ",auth,isStudent,(req,res)=>{
