@@ -82,13 +82,14 @@ exports.login=async (req,res)=>{
             user.password=undefined
             // password hide kr dia 
 
-            res.cookie('token', token, { httpOnly: true, expiresIn:Date.now() +30000 }).status(200).json({
-                message:"user logged in successfuly ",
+            const expirationTime = new Date(Date.now() + 30000); // 5000 milliseconds (5 seconds) from now
+            res.cookie('token', token, { httpOnly: true, expires: expirationTime }).status(200).json({
+                message: "user logged in successfully",
                 token,
                 user,
-                success:"true"
-
+                success: true
             });
+            
             // res.status(200).json({
             //     message:"user logged in successfuly ",
             //     token,

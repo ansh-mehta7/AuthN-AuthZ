@@ -11,7 +11,8 @@ exports.auth=(req,res,next)=>{
             console.log("body",req.body.token)
             console.log("headers",req.header("Authorization"))
             // extract jwt token 
-            const token=req.body.token|| req.cookies.token || req.header("Authorization").replace("Bearer","");
+            const token=req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer","");
+            
             if (!token){
                 return res.status(400).json({
                     success:false,
@@ -23,8 +24,9 @@ exports.auth=(req,res,next)=>{
         try{
 
             const decode =jwt.verify(token,process.env.JWT_SECRET)
-            console.log(decode)
+           
             req.user=decode;
+            console.log(decode)
             // req user ke andar payload ko store kr lia 
 
         }
@@ -47,10 +49,11 @@ exports.auth=(req,res,next)=>{
 
     exports.isStudent= (req,res,next)=>{
         try{
+            console.log(req.user.role)
             if (req.user.role!=="Student"){
                 return res.status(401).josn({
                     success:false ,
-                    message:"this is a protected route for student "
+                    message:"this is a protected route for student"
                 })
             }
             next();
@@ -66,10 +69,12 @@ exports.auth=(req,res,next)=>{
 
     exports.isAdmin= (req,res,next)=>{
         try{
+            console.log(req.user.role)
+
             if (req.user.role!=="Admin"){
-                return res.status(401).josn({
+                return res.status(401).json({
                     success:false ,
-                    message:"this is a protected route for admin "
+                    message:"this is a protected route for admin"
                 })
             }
             next();
